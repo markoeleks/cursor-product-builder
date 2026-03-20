@@ -10,6 +10,7 @@ on:
 jobs:
   mirror:
     runs-on: ubuntu-latest
+    if: github.repository_owner == 'markoeleks'
     steps:
       - name: Mirror
         run: |
