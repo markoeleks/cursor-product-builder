@@ -17,5 +17,6 @@ jobs:
             "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" \
             repo.git
           cd repo.git
-          git push --mirror \
-            "https://x-access-token:${{ secrets.MIRROR_PAT }}@github.com/markoprljic/${{ github.event.repository.name }}.git"
+          git push --prune \
+            "https://x-access-token:${{ secrets.MIRROR_PAT }}@github.com/markoprljic/${{ github.event.repository.name }}.git" \
+            '+refs/heads/*:refs/heads/*' '+refs/tags/*:refs/tags/*'
