@@ -11,25 +11,11 @@ jobs:
   mirror:
     runs-on: ubuntu-latest
     steps:
-      - name: Setup SSH
-        env:
-          MIRROR_SSH_KEY: ${{ secrets.MIRROR_SSH_PRIVATE_KEY }}
-        run: |
-          mkdir -p ~/.ssh
-          printf '%s\n' "$MIRROR_SSH_KEY" > ~/.ssh/mirror_key
-          chmod 600 ~/.ssh/mirror_key
-          cat >> ~/.ssh/config <<'SSHEOF'
-          Host github-mirror
-            HostName github.com
-            User git
-            IdentityFile ~/.ssh/mirror_key
-            StrictHostKeyChecking no
-          SSHEOF
-
       - name: Mirror
         run: |
           git clone --mirror \
             "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" \
             repo.git
           cd repo.git
-          git push --mirror "git@github-mirror:markoprljic/${{ github.event.repository.name }}.git"
+          git push --mirror \
+            "https://x-access-token:${{ secrets.MIRROR_PAT }}@github.com/markoprljic/${{ github.event.repository.name }}.git"
